@@ -6,7 +6,7 @@
 /*   By: juan-anm  <juan-anm@student.42barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/09 11:59:37 by juan-anm          #+#    #+#             */
-/*   Updated: 2024/01/09 15:50:53 by juan-anm         ###   ########.fr       */
+/*   Updated: 2024/01/09 16:42:17 by juan-anm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ int	ft_init_table(t_table *table, char **av)
 	table->time_2sleep = ft_atol(av[4]);
 	if (av[5])
 		table->num_meals = ft_atol(av[5]);
-
 	return (0);
 }
 
