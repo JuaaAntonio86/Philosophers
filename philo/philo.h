@@ -6,7 +6,7 @@
 /*   By: juan-anm  <juan-anm@student.42barcel>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/09 11:41:15 by juanantonio       #+#    #+#             */
-/*   Updated: 2024/01/09 15:33:42 by juan-anm         ###   ########.fr       */
+/*   Updated: 2024/01/12 17:29:41 by juan-anm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,20 +23,23 @@
 
 typedef struct s_philo
 {
-	int	id;
-	int	last_meal;
-
+	int					id;
+	int					last_meal;
+	pthread_t			thread_id;
+	struct s_table		*table;
 }	t_philo;
 
 typedef struct s_table
 {
-	long	num_phil;
-	long	time_2die;
-	long	time_2eat;
-	long	time_2sleep;
-	long	num_meals;
-
-}	t_table;
+	long			num_phil;
+	long			time_2die;
+	long			time_2eat;
+	long			time_2sleep;
+	long			num_meals;
+	pthread_mutex_t	forks;
+	t_philo			*philos;
+	
+}				t_table;
 
 int		ft_error_msg(int code);
 int		ft_init_table(t_table *table, char **av);

@@ -6,7 +6,7 @@
 #    By: juan-anm  <juan-anm@student.42barcel>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/09 11:46:49 by juanantonio       #+#    #+#              #
-#    Updated: 2024/01/09 16:43:24 by juan-anm         ###   ########.fr        #
+#    Updated: 2024/01/12 17:07:46 by juan-anm         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,15 +14,15 @@ NAME = philo
 HEADER = philo.h
 
 CFLAGS = -Wall -Wextra -Werror -MMD 
-##LIBS = -lpthread
+LIBS = -pthread
 
-SRC = main.c \
+SRC = main.c utils.c \
 
 OBJ_DIR = obj/
 OBJS = $(addprefix $(OBJ_DIR), $(SRC:.c=.o))
 DEPS = $(addprefix $(OBJ_DIR), $(SRC:.c=.d))
 
-$(shell mkdir -p $(OBJ_DIR))
+
 
 RM = rm -rf
 
@@ -35,6 +35,7 @@ $(OBJ_DIR)%.o: $(SRC_DIR)%.c Makefile $(HEADER)
 
 all:
 	@$(MAKE) $(NAME) --no-print-directory
+	$(shell mkdir -p $(OBJ_DIR))
 	
 $(NAME):: $(OBJS)
 	@$(CC) $(CFLAGS) $(OBJS) -o $@
@@ -44,15 +45,18 @@ $(NAME)::
 	@echo -n
 
 clean:
-	@if [ -f "$(OBJS)" ] || [ -f "$(DEPS)" ]; then \
-        $(RM) $(OBJS) $(DEPS); \
-        echo "$(GREEN)All Files Deleted Successfully$(NC)"; \
-		$(RM) $(OBJ_DIR); \
-		echo "$(GREEN)Object Directory Deleted$(NC)"; \
-    else \
-        echo "$(RED)No Files to Clean$(NC)"; \
-    fi
 	
+	@if [ -d "$(OBJ_DIR)" ]; then \
+		$(RM) -r $(OBJ_DIR); \
+		echo "$(GREEN)Object Directory Deleted Successfully$(NC)"; \
+	fi
+	@if [ -n "$(wildcard $(OBJS) $(DEPS))" ]; then \
+		$(RM) $(OBJS) $(DEPS); \
+		echo "$(GREEN)Object Files Deleted Successfully$(NC)"; \
+	else \
+		echo "$(RED)No Object Files to Clean$(NC)"; \
+	fi
+
 
 fclean: clean
 	@$(RM) $(NAME)
