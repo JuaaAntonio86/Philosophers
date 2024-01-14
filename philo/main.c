@@ -17,19 +17,21 @@ static void	*test(void *thread)
 	t_philo	*philosopher = (t_philo *)thread;
 	t_table *table = philosopher->table;
 
-	//pthread_mutex_lock(&(table->forks));	
-	//printf("hello %i number %li\n", (int)philosopher->id, table->num_meals++);
+	if (philosopher->id % 2 == 0)
+		usleep(table->time_2eat / 3);
+	pthread_mutex_lock(&(table->forks[philosopher->l_fork]));	
+	pthread_mutex_lock(&(table->forks[philosopher->r_fork]));	
 	int i = 0;
 	while (i++< 1000)
 		table->num_meals++;
-	//usleep(600);
-	printf("number %li\n", table->num_meals);
-	//pthread_mutex_unlock(&(table->forks));
+	printf("number %li with id %i\n", table->num_meals, philosopher->id);
+	pthread_mutex_unlock(&(table->forks[philosopher->l_fork]));	
+	pthread_mutex_unlock(&(table->forks[philosopher->r_fork]));	
 
 	return (NULL);
 }
 
-static	int	create_thread(t_table *table)
+static	int	create_table(t_table *table)
 {
 	int i;
 
@@ -37,24 +39,28 @@ static	int	create_thread(t_table *table)
 	table->philos = malloc(sizeof(t_philo) * table->num_phil);
 	if (!table->philos)
 		return (ft_error_msg(3));
-	//table->forks = malloc(sizeof(pthread_mutex_t) * table->num_phil);
-	if (!table->philos)
-		return (ft_error_msg(3));
-	if (pthread_mutex_init(&(table->forks), NULL))
+	table->forks = malloc(sizeof(pthread_mutex_t) * table->num_phil);
+	if (!table->forks)
 		return (ft_error_msg(3));
 	while (++i < table->num_phil)
 	{
-		table->philos[i].id = i;
+		if (pthread_mutex_init(&(table->forks[i]), NULL))
+			return (ft_error_msg(3));
+		table->philos[i].id = i + 1;
 		table->philos[i].table = table;
+		table->philos[i].l_fork = i + 1;
+		if (i == 0)
+			table->philos[i].r_fork = table->num_phil;
+		else
+			table->philos[i].r_fork = i;
 		pthread_create(&(table->philos[i].thread_id), NULL, test, &(table->philos[i]));
 	}
 	i = -1;
-	printf("gefef");
 	while (++i < table->num_phil)
 	{
 		pthread_join((table->philos[i].thread_id), NULL);
+		pthread_mutex_destroy(&(table->forks[i]));
 	}
-		pthread_mutex_destroy(&(table->forks));
 	return (0);
 }
 
@@ -68,7 +74,7 @@ int	main(int ac, char **av)
 		return (ft_error_msg(2));
 	if (ft_init_table(&table, av))
 		return (ft_error_msg(2));
-	if (create_thread(&table))
+	if (create_table(&table))
 		return (3);
 	return (0);
 }
@@ -79,7 +85,7 @@ int	ft_init_table(t_table *table, char **av)
 	table->time_2die = ft_atol(av[2]);
 	table->time_2eat = ft_atol(av[3]);
 	table->time_2sleep = ft_atol(av[4]);
-	if (table->num_phil < 1 || table->time_2die < 1 
+	if (table->num_phil < 2 || table->time_2die < 1 
 		|| table->time_2eat < 1 || table->time_2sleep < 1)
 		return (1);
 	if (av[5])
