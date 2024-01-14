@@ -24,7 +24,7 @@
 typedef struct s_philo
 {
 	int					id;
-	int					last_meal;
+	long long			last_meal;
 	pthread_t			thread_id;
 	struct s_table		*table;
 	int					l_fork;
@@ -38,14 +38,18 @@ typedef struct s_table
 	long			time_2eat;
 	long			time_2sleep;
 	long			num_meals;
+	long long		dinner_time;
 	pthread_mutex_t	*forks;
+	pthread_mutex_t printing;
 	t_philo			*philos;
 	
 }				t_table;
 
-int		ft_error_msg(int code);
-int		ft_init_table(t_table *table, char **av);
-int		ft_check_input(char **av);
-long	ft_atol(const char *str);
+int			ft_error_msg(int code);
+int			ft_init_table(t_table *table, char **av);
+void		ft_blockprint(t_table *table, char *str, int philo);
+int			ft_check_input(char **av);
+long		ft_atol(const char *str);
+long long	timestamp(void);
 
 #endif

@@ -12,22 +12,39 @@
 
 #include "philo.h"
 
+long long	timestamp(void)
+{
+	struct timeval	t;
+
+	gettimeofday(&t, NULL);
+	return ((t.tv_sec * 1000) + (t.tv_usec / 1000));
+}
+
+void	ft_blockprint(t_table *table, char *str, int philo)
+{
+	pthread_mutex_lock(&(table->printing));
+	printf("Time %lli", timestamp() - table->dinner_time);
+	printf(" Philosopher number %i %s\n", philo, str);
+	pthread_mutex_unlock(&(table->printing));
+}
+
 static void	*test(void *thread)
 {
 	t_philo	*philosopher = (t_philo *)thread;
 	t_table *table = philosopher->table;
 
 	if (philosopher->id % 2 == 0)
-		usleep(table->time_2eat / 3);
-	pthread_mutex_lock(&(table->forks[philosopher->l_fork]));	
-	pthread_mutex_lock(&(table->forks[philosopher->r_fork]));	
-	int i = 0;
-	while (i++< 1000)
-		table->num_meals++;
-	printf("number %li with id %i\n", table->num_meals, philosopher->id);
+		usleep(250);
+	pthread_mutex_lock(&(table->forks[philosopher->l_fork]));
+	ft_blockprint(table, "has taken a fork", philosopher->id);
+	pthread_mutex_lock(&(table->forks[philosopher->r_fork]));
+	ft_blockprint(table, "has taken a fork", philosopher->id);
+	ft_blockprint(table, "is eating", philosopher->id);
+	while(table->time_2eat >= timestamp() - philosopher->last_meal)
+		;
+	philosopher->last_meal = timestamp();
 	pthread_mutex_unlock(&(table->forks[philosopher->l_fork]));	
 	pthread_mutex_unlock(&(table->forks[philosopher->r_fork]));	
-
 	return (NULL);
 }
 
@@ -42,6 +59,7 @@ static	int	create_table(t_table *table)
 	table->forks = malloc(sizeof(pthread_mutex_t) * table->num_phil);
 	if (!table->forks)
 		return (ft_error_msg(3));
+	table->dinner_time = timestamp();
 	while (++i < table->num_phil)
 	{
 		if (pthread_mutex_init(&(table->forks[i]), NULL))
@@ -49,6 +67,7 @@ static	int	create_table(t_table *table)
 		table->philos[i].id = i + 1;
 		table->philos[i].table = table;
 		table->philos[i].l_fork = i + 1;
+		table->philos[i].last_meal = timestamp();
 		if (i == 0)
 			table->philos[i].r_fork = table->num_phil;
 		else
@@ -92,6 +111,7 @@ int	ft_init_table(t_table *table, char **av)
 		table->num_meals = ft_atol(av[5]);
 	else
 		table->num_meals = -1;
+	pthread_mutex_init(&(table->printing), NULL);
 	return (0);
 }
 
