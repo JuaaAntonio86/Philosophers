@@ -12,6 +12,12 @@
 
 #include "philo.h"
 
+bool ft_check_all_ate(t_table *table)
+{
+
+
+}
+
 long long	timestamp(void)
 {
 	struct timeval	t;
@@ -26,6 +32,15 @@ void	ft_blockprint(t_table *table, char *str, int philo)
 	printf("Time %lli", timestamp() - table->dinner_time);
 	printf(" Philosopher number %i %s\n", philo, str);
 	pthread_mutex_unlock(&(table->printing));
+}
+static void *waiter_work(void *table)
+{
+	while(!ft_check_all_ate(&table)) //|| !ft_check_deads(&table))
+	{
+
+
+	}
+
 }
 
 static void	*test(void *thread)
@@ -42,9 +57,10 @@ static void	*test(void *thread)
 	ft_blockprint(table, "is eating", philosopher->id);
 	while(table->time_2eat >= timestamp() - philosopher->last_meal)
 		;
-	philosopher->last_meal = timestamp();
+	philosopher->num_meals++;
 	pthread_mutex_unlock(&(table->forks[philosopher->l_fork]));	
 	pthread_mutex_unlock(&(table->forks[philosopher->r_fork]));	
+	philosopher->last_meal = timestamp();
 	return (NULL);
 }
 
@@ -67,6 +83,7 @@ static	int	create_table(t_table *table)
 		table->philos[i].id = i + 1;
 		table->philos[i].table = table;
 		table->philos[i].l_fork = i + 1;
+		table->philos[i].num_meals = 0;
 		table->philos[i].last_meal = timestamp();
 		if (i == 0)
 			table->philos[i].r_fork = table->num_phil;
@@ -74,12 +91,14 @@ static	int	create_table(t_table *table)
 			table->philos[i].r_fork = i;
 		pthread_create(&(table->philos[i].thread_id), NULL, test, &(table->philos[i]));
 	}
+	pthread_create(&(table->waiter), NULL, waiter_work, &(table));
 	i = -1;
 	while (++i < table->num_phil)
 	{
 		pthread_join((table->philos[i].thread_id), NULL);
 		pthread_mutex_destroy(&(table->forks[i]));
 	}
+	pthread_join((table->waiter), NULL);
 	return (0);
 }
 
@@ -108,9 +127,9 @@ int	ft_init_table(t_table *table, char **av)
 		|| table->time_2eat < 1 || table->time_2sleep < 1)
 		return (1);
 	if (av[5])
-		table->num_meals = ft_atol(av[5]);
+		table->meals_input = ft_atol(av[5]);
 	else
-		table->num_meals = -1;
+		table->meals_input = -1;
 	pthread_mutex_init(&(table->printing), NULL);
 	return (0);
 }
