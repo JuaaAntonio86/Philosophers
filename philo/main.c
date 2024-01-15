@@ -14,8 +14,21 @@
 
 bool ft_check_all_ate(t_table *table)
 {
+	int	i;
+	static	int lunches = 0;
 
-
+	i = 0;
+	if (table->meals_input == -1)
+		return (0);
+	while (i < table->num_phil)
+	{
+		if (table->philos[i].num_meals == table->meals_input)	
+			lunches++;
+		if (lunches == table->meals_input)
+			return (1);
+		i++;
+	}
+	return (0);
 }
 
 long long	timestamp(void)
@@ -35,12 +48,10 @@ void	ft_blockprint(t_table *table, char *str, int philo)
 }
 static void *waiter_work(void *table)
 {
-	while(!ft_check_all_ate(&table)) //|| !ft_check_deads(&table))
-	{
-
-
-	}
-
+	while(!ft_check_all_ate(table)) //|| !ft_check_deads(&table))
+		;
+	printf("Dinner has finished");
+	return (NULL);
 }
 
 static void	*test(void *thread)
@@ -50,17 +61,22 @@ static void	*test(void *thread)
 
 	if (philosopher->id % 2 == 0)
 		usleep(250);
-	pthread_mutex_lock(&(table->forks[philosopher->l_fork]));
-	ft_blockprint(table, "has taken a fork", philosopher->id);
-	pthread_mutex_lock(&(table->forks[philosopher->r_fork]));
-	ft_blockprint(table, "has taken a fork", philosopher->id);
-	ft_blockprint(table, "is eating", philosopher->id);
-	while(table->time_2eat >= timestamp() - philosopher->last_meal)
-		;
-	philosopher->num_meals++;
-	pthread_mutex_unlock(&(table->forks[philosopher->l_fork]));	
-	pthread_mutex_unlock(&(table->forks[philosopher->r_fork]));	
-	philosopher->last_meal = timestamp();
+	while(philosopher->num_meals < table->meals_input)
+	{
+		pthread_mutex_lock(&(table->forks[philosopher->l_fork]));
+		ft_blockprint(table, "has taken a fork", philosopher->id);
+		pthread_mutex_lock(&(table->forks[philosopher->r_fork]));
+		ft_blockprint(table, "has taken a fork", philosopher->id);
+		ft_blockprint(table, "is eating", philosopher->id);
+		while(table->time_2eat >= timestamp() - philosopher->last_meal)
+			;
+		pthread_mutex_unlock(&(table->forks[philosopher->l_fork]));	
+		pthread_mutex_unlock(&(table->forks[philosopher->r_fork]));	
+		philosopher->last_meal = timestamp();
+		philosopher->num_meals++;
+		if (philosopher->num_meals == table->meals_input)
+			break;
+	}
 	return (NULL);
 }
 
@@ -98,7 +114,7 @@ static	int	create_table(t_table *table)
 		pthread_join((table->philos[i].thread_id), NULL);
 		pthread_mutex_destroy(&(table->forks[i]));
 	}
-	pthread_join((table->waiter), NULL);
+	pthread_join(&(table->waiter), NULL);
 	return (0);
 }
 
@@ -119,15 +135,15 @@ int	main(int ac, char **av)
 
 int	ft_init_table(t_table *table, char **av)
 {
-	table->num_phil = ft_atol(av[1]);
-	table->time_2die = ft_atol(av[2]);
-	table->time_2eat = ft_atol(av[3]);
-	table->time_2sleep = ft_atol(av[4]);
+	table->num_phil = (int)ft_atol(av[1]);
+	table->time_2die = (int)ft_atol(av[2]);
+	table->time_2eat = (int)ft_atol(av[3]);
+	table->time_2sleep = (int)ft_atol(av[4]);
 	if (table->num_phil < 2 || table->time_2die < 1 
 		|| table->time_2eat < 1 || table->time_2sleep < 1)
 		return (1);
 	if (av[5])
-		table->meals_input = ft_atol(av[5]);
+		table->meals_input = (int)ft_atol(av[5]);
 	else
 		table->meals_input = -1;
 	pthread_mutex_init(&(table->printing), NULL);

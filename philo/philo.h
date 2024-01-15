@@ -34,10 +34,10 @@ typedef struct s_philo
 
 typedef struct s_table
 {
-	long			num_phil;
-	long			time_2die;
-	long			time_2eat;
-	long			time_2sleep;
+	int				num_phil;
+	int				time_2die;
+	int				time_2eat;
+	int				time_2sleep;
 	int				meals_input;
 	bool			all_ate;
 	long long		dinner_time;
@@ -54,7 +54,7 @@ void		ft_blockprint(t_table *table, char *str, int philo);
 int			ft_check_input(char **av);
 long		ft_atol(const char *str);
 long long	timestamp(void);
-bool ft_check_all_ate(t_table *table);
+bool 		ft_check_all_ate(t_table *table);
 
 
 #endif
