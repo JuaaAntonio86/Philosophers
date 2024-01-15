@@ -6,23 +6,21 @@
 #    By: juan-anm  <juan-anm@student.42barcel>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/09 11:46:49 by juanantonio       #+#    #+#              #
-#    Updated: 2024/01/12 17:07:46 by juan-anm         ###   ########.fr        #
+#    Updated: 2024/01/15 17:43:44 by juan-anm         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = philo
 HEADER = philo.h
 
-CFLAGS = -Wall -Wextra -Werror -MMD 
+CFLAGS = -Wall -Wextra -Werror -MMD -fsanitize=address
 LIBS = -pthread
 
-SRC = main.c utils.c \
+SRC = main.c utils.c initializer.c\
 
 OBJ_DIR = obj/
 OBJS = $(addprefix $(OBJ_DIR), $(SRC:.c=.o))
 DEPS = $(addprefix $(OBJ_DIR), $(SRC:.c=.d))
-
-
 
 RM = rm -rf
 
