@@ -3,17 +3,17 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: juan-anm  <juan-anm@student.42barcel>      +#+  +:+       +#+         #
+#    By: juanantoniomartinezmorales <juanantonio    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/09 11:46:49 by juanantonio       #+#    #+#              #
-#    Updated: 2024/01/15 17:43:44 by juan-anm         ###   ########.fr        #
+#    Updated: 2024/01/15 22:55:46 by juanantonio      ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = philo
 HEADER = philo.h
 
-CFLAGS = -Wall -Wextra -Werror -MMD -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror -MMD ##-fsanitize=address
 LIBS = -pthread
 
 SRC = main.c utils.c initializer.c\

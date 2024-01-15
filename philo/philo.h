@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: juan-anm  <juan-anm@student.42barcel>      +#+  +:+       +#+        */
+/*   By: juanantoniomartinezmorales <juanantonio    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/09 11:41:15 by juanantonio       #+#    #+#             */
-/*   Updated: 2024/01/15 18:54:03 by juan-anm         ###   ########.fr       */
+/*   Updated: 2024/01/16 00:25:35 by juanantonio      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ typedef struct s_table
 	int					time_2sleep;
 	int					meals_input;
 	bool				all_ate;
+	int					end_dinner;
 	long long			dinner_time;
 	pthread_t			waiter;
 	pthread_mutex_t		*forks;
@@ -49,15 +50,14 @@ typedef struct s_table
 
 int			ft_error_msg(int code);
 int			ft_init_table(t_table *table, char **av);
-void		ft_blockprint(t_table *table, char *str, int philo);
+void		ft_blockprint(t_table *table, char *str, int philo, int flag);
 int			ft_check_input(char **av);
 long		ft_atol(const char *str);
 long long	timestamp(void);
 bool		ft_check_all_ate(t_table *table);
+int			ft_check_all_live(t_table *table);
 int			mutex_initializer(t_table *table);
 int			philo_initializer(t_table *table);
 void		*eats(void *thread);
-
-
 
 #endif

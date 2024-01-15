@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: juan-anm  <juan-anm@student.42barcel>      +#+  +:+       +#+        */
+/*   By: juanantoniomartinezmorales <juanantonio    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 17:37:04 by juan-anm          #+#    #+#             */
-/*   Updated: 2024/01/15 18:43:06 by juan-anm         ###   ########.fr       */
+/*   Updated: 2024/01/16 00:29:33 by juanantonio      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,12 +75,15 @@ long	ft_atol(const char *str)
 	return (ato);
 }
 
-void	ft_blockprint(t_table *table, char *str, int philo)
+void	ft_blockprint(t_table *table, char *str, int philo, int flag)
 {
-	pthread_mutex_lock(&(table->printing));
-	printf("Time %lli", timestamp() - table->dinner_time);
-	printf(" Philosopher number %i %s\n", philo + 1, str);
-	pthread_mutex_unlock(&(table->printing));
+	if (!table->end_dinner || flag)
+	{
+		pthread_mutex_lock(&(table->printing));
+		printf("Time %lli", timestamp() - table->dinner_time);
+		printf(" Philosopher number %i %s\n", philo + 1, str);
+		pthread_mutex_unlock(&(table->printing));
+	}
 }
 
 long long	timestamp(void)
