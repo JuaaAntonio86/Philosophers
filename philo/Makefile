@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: juanantoniomartinezmorales <juanantonio    +#+  +:+       +#+         #
+#    By: juanantonio <juanantonio@student.42.fr>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/09 11:46:49 by juanantonio       #+#    #+#              #
-#    Updated: 2024/01/15 22:55:46 by juanantonio      ###   ########.fr        #
+#    Updated: 2024/01/16 18:51:14 by juanantonio      ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ HEADER = philo.h
 CFLAGS = -Wall -Wextra -Werror -MMD ##-fsanitize=address
 LIBS = -pthread
 
-SRC = main.c utils.c initializer.c\
+SRC = main.c utils.c initializer.c philive.c\
 
 OBJ_DIR = obj/
 OBJS = $(addprefix $(OBJ_DIR), $(SRC:.c=.o))

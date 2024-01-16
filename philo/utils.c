@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: juanantoniomartinezmorales <juanantonio    +#+  +:+       +#+        */
+/*   By: juanantonio <juanantonio@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 17:37:04 by juan-anm          #+#    #+#             */
-/*   Updated: 2024/01/16 00:29:33 by juanantonio      ###   ########.fr       */
+/*   Updated: 2024/01/16 18:52:05 by juanantonio      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,21 +30,6 @@ int	ft_check_input(char **av)
 		i++;
 	}
 	return (0);
-}
-
-int	ft_error_msg(int code)
-{
-	if (code == 1)
-		printf("Error: Wrong number of arguments\n");
-	if (code == 2)
-		printf("Error: Wrong arguments format, please insert a positive int\n");
-	if (code == 3)
-		printf("Memory allocation failed.\n");
-	if (code == 4)
-		printf("Mutex initialization error.\n");
-	if (code == 5)
-		printf("Pthread initialization error.\n");
-	return (code);
 }
 
 long	ft_atol(const char *str)
@@ -92,4 +77,13 @@ long long	timestamp(void)
 
 	gettimeofday(&t, NULL);
 	return ((t.tv_sec * 1000) + (t.tv_usec / 1000));
+}
+
+void	ft_usleep(int ms)
+{
+	long int	time;
+
+	time = timestamp();
+	while (timestamp() - time < ms)
+		usleep(ms / 10);
 }

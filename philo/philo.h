@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: juanantoniomartinezmorales <juanantonio    +#+  +:+       +#+        */
+/*   By: juanantonio <juanantonio@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/09 11:41:15 by juanantonio       #+#    #+#             */
-/*   Updated: 2024/01/16 00:25:35 by juanantonio      ###   ########.fr       */
+/*   Updated: 2024/01/16 18:51:40 by juanantonio      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ typedef struct s_table
 	int					end_dinner;
 	long long			dinner_time;
 	pthread_t			waiter;
+	pthread_mutex_t		meal_update;
 	pthread_mutex_t		*forks;
 	pthread_mutex_t		printing;
 	t_philo				*philos;
@@ -59,5 +60,8 @@ int			ft_check_all_live(t_table *table);
 int			mutex_initializer(t_table *table);
 int			philo_initializer(t_table *table);
 void		*eats(void *thread);
-
+void		*waiter_work(t_table *table);
+int			create_table(t_table *table);
+void		ft_usleep(int ms);
+void		philo_eat(t_table *table, t_philo *philo);
 #endif

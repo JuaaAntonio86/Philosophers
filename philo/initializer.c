@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   initializer.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: juanantoniomartinezmorales <juanantonio    +#+  +:+       +#+        */
+/*   By: juanantonio <juanantonio@student.42.fr>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 17:07:47 by juan-anm          #+#    #+#             */
-/*   Updated: 2024/01/15 23:25:24 by juanantonio      ###   ########.fr       */
+/*   Updated: 2024/01/16 18:44:43 by juanantonio      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	ft_init_table(t_table *table, char **av)
 	table->time_2sleep = ft_atol(av[4]);
 	table->end_dinner = 0;
 	table->all_ate = 0;
-	if (table->num_phil < 2 || table->time_2die < 1 
+	if (table->num_phil < 1 || table->time_2die < 1 
 		|| table->time_2eat < 1 || table->time_2sleep < 1)
 		return (1);
 	if (table->num_phil > INT_MAX || table->time_2die > INT_MAX
@@ -44,6 +44,8 @@ int	mutex_initializer(t_table *table)
 	i = -1;
 	if (pthread_mutex_init(&(table->printing), NULL))
 		return (ft_error_msg(4));
+	if (pthread_mutex_init(&(table->meal_update), NULL))
+		return (ft_error_msg(4));
 	table->forks = malloc(sizeof(pthread_mutex_t) * table->num_phil);
 	if (!table->forks)
 		return (ft_error_msg(3));
@@ -64,8 +66,8 @@ int	philo_initializer(t_table *table)
 	{
 		table->philos[i].id = i;
 		table->philos[i].table = table;
-		table->philos[i].r_fork = i;
 		table->philos[i].num_meals = 0;
+		table->philos[i].r_fork = i;
 		if (i == table->num_phil - 1)
 			table->philos[i].l_fork = 0;
 		else
