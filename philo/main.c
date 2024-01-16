@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: juanantonio <juanantonio@student.42.fr>    +#+  +:+       +#+        */
+/*   By: juanantoniomartinezmorales <juanantonio    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 18:43:29 by juanantonio       #+#    #+#             */
-/*   Updated: 2024/01/16 18:53:44 by juanantonio      ###   ########.fr       */
+/*   Updated: 2024/01/16 23:50:49 by juanantonio      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,21 +14,20 @@
 
 int	main(int ac, char **av)
 {
-	t_table	*table;
+	t_table	table;
 	int		code;
 
 	code = 0;
-	table = malloc(sizeof(t_table));
 	if (ac != 5 && ac != 6)
 		return (ft_error_msg(1));
 	if (ft_check_input(av))
 		return (ft_error_msg(2));
-	if (ft_init_table(table, av))
+	if (ft_init_table(&table, av))
 		return (ft_error_msg(2));
-	code = mutex_initializer(table);
+	code = mutex_initializer(&table);
 	if (code)
 		return (code);
-	code = create_table(table);
+	code = create_table(&table);
 	if (code)
 		return (code);
 	return (0);
@@ -39,16 +38,14 @@ int	create_table(t_table *table)
 	int	i;
 
 	i = -1;
-	table->philos = malloc(sizeof(t_philo) * table->num_phil);
-	if (!table->philos)
-		return (ft_error_msg(3));
+	//table->philos = malloc(sizeof(t_philo) * table->num_phil);
+	//if (!table->philos)
+	//	return (ft_error_msg(3));
 	table->dinner_time = timestamp();
 	if (philo_initializer(table))
 		return (5);
 	waiter_work(table);
 	i = -1;
-	if (table->end_dinner)
-		ft_blockprint(table, "has died", table->end_dinner - 1, 1);
 	while (++i < table->num_phil)
 	{
 		pthread_join((table->philos[i].thread_id), NULL);

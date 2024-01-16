@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philive.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: juanantonio <juanantonio@student.42.fr>    +#+  +:+       +#+        */
+/*   By: juanantoniomartinezmorales <juanantonio    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/09 11:59:37 by juan-anm          #+#    #+#             */
-/*   Updated: 2024/01/16 18:58:45 by juanantonio      ###   ########.fr       */
+/*   Updated: 2024/01/17 00:03:40 by juanantonio      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ bool	ft_check_all_ate(t_table *table)
 	return (0);
 }
 
-int	ft_check_all_live(t_table *table)
+inline int	ft_check_all_live(t_table *table)
 {
 	int			i;
 	long long	time;
@@ -42,9 +42,9 @@ int	ft_check_all_live(t_table *table)
 	i = 0;
 	while (!table->all_ate && !table->end_dinner && i < table->num_phil)
 	{
-		pthread_mutex_lock(&(table->meal_update));
+		//pthread_mutex_lock(&(table->meal_update));
 		time = timestamp() - table->philos[i].last_meal;
-		pthread_mutex_unlock(&(table->meal_update));
+		//pthread_mutex_unlock(&(table->meal_update));
 		if (time > table->time_2die)
 		{
 			table->end_dinner = table->philos[i].id + 1;
@@ -58,7 +58,7 @@ int	ft_check_all_live(t_table *table)
 void	*waiter_work(t_table *table)
 {
 	while (!ft_check_all_ate(table) && !ft_check_all_live(table))
-		ft_usleep(500);
+		ft_usleep(10);
 	return (NULL);
 }
 
@@ -69,8 +69,8 @@ void	*eats(void *thread)
 
 	philo = (t_philo *)thread;
 	table = philo->table;
-	if (philo->id % 2)
-		ft_usleep(table->time_2eat / 2);
+	if (philo->id % 2 || philo->id == table->num_phil)
+		ft_usleep(table->time_2eat);
 	while (!table->end_dinner && !table->all_ate)
 	{
 		philo_eat(table, philo);
@@ -78,7 +78,7 @@ void	*eats(void *thread)
 	return (NULL);
 }
 
-void	philo_eat(t_table *table, t_philo *philo)
+inline void	philo_eat(t_table *table, t_philo *philo)
 {
 	pthread_mutex_lock(&(table->forks[philo->r_fork]));
 	ft_blockprint(table, "has taken a fork", philo->id, 0);
@@ -87,9 +87,9 @@ void	philo_eat(t_table *table, t_philo *philo)
 	pthread_mutex_lock(&(table->forks[philo->l_fork]));
 	ft_blockprint(table, "has taken a fork", philo->id, 0);
 	ft_blockprint(table, "is eating", philo->id, 0);
-	pthread_mutex_lock(&(table->meal_update));
+	//pthread_mutex_lock(&(table->meal_update));
 	philo->last_meal = timestamp();
-	pthread_mutex_unlock(&(table->meal_update));
+	//pthread_mutex_unlock(&(table->meal_update));
 	ft_usleep(table->time_2eat);
 	philo->num_meals++;
 	pthread_mutex_unlock(&(table->forks[philo->l_fork]));
@@ -100,5 +100,5 @@ void	philo_eat(t_table *table, t_philo *philo)
 	ft_blockprint(table, "is sleeping", philo->id, 0);
 	ft_usleep(table->time_2sleep);
 	ft_blockprint(table, "is thinking", philo->id, 0);
-	ft_usleep(100);
+	ft_usleep(10);
 }

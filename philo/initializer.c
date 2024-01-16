@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   initializer.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: juanantonio <juanantonio@student.42.fr>    +#+  +:+       +#+        */
+/*   By: juanantoniomartinezmorales <juanantonio    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 17:07:47 by juan-anm          #+#    #+#             */
-/*   Updated: 2024/01/16 18:44:43 by juanantonio      ###   ########.fr       */
+/*   Updated: 2024/01/16 23:38:22 by juanantonio      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,9 +46,9 @@ int	mutex_initializer(t_table *table)
 		return (ft_error_msg(4));
 	if (pthread_mutex_init(&(table->meal_update), NULL))
 		return (ft_error_msg(4));
-	table->forks = malloc(sizeof(pthread_mutex_t) * table->num_phil);
-	if (!table->forks)
-		return (ft_error_msg(3));
+	//table->forks = malloc(sizeof(pthread_mutex_t) * table->num_phil);
+	//if (!table->forks)
+	//	return (ft_error_msg(3));
 	while (++i < table->num_phil)
 	{
 		if (pthread_mutex_init(&(table->forks[i]), NULL))

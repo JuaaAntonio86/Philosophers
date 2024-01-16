@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: juanantonio <juanantonio@student.42.fr>    +#+  +:+       +#+        */
+/*   By: juanantoniomartinezmorales <juanantonio    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/09 11:41:15 by juanantonio       #+#    #+#             */
-/*   Updated: 2024/01/16 18:51:40 by juanantonio      ###   ########.fr       */
+/*   Updated: 2024/01/16 23:39:37 by juanantonio      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,9 +44,9 @@ typedef struct s_table
 	long long			dinner_time;
 	pthread_t			waiter;
 	pthread_mutex_t		meal_update;
-	pthread_mutex_t		*forks;
+	pthread_mutex_t		forks[200];
 	pthread_mutex_t		printing;
-	t_philo				*philos;
+	t_philo				philos[200];
 }				t_table;
 
 int			ft_error_msg(int code);

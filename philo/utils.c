@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: juanantonio <juanantonio@student.42.fr>    +#+  +:+       +#+        */
+/*   By: juanantoniomartinezmorales <juanantonio    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 17:37:04 by juan-anm          #+#    #+#             */
-/*   Updated: 2024/01/16 18:52:05 by juanantonio      ###   ########.fr       */
+/*   Updated: 2024/01/17 00:04:53 by juanantonio      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	ft_check_input(char **av)
 		j = 0;
 		while (av[i][j])
 		{
-			if (!(av[i][j] >= 48 && av[i][j] <= 57)) 
+			if (!(av[i][j] >= 48 && av[i][j] <= 57))
 				return (1);
 			j++;
 		}
@@ -60,7 +60,7 @@ long	ft_atol(const char *str)
 	return (ato);
 }
 
-void	ft_blockprint(t_table *table, char *str, int philo, int flag)
+inline void	ft_blockprint(t_table *table, char *str, int philo, int flag)
 {
 	if (!table->end_dinner || flag)
 	{
