@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: juanantoniomartinezmorales <juanantonio    +#+  +:+       +#+        */
+/*   By: juan-anm <juan-anm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/09 11:41:15 by juanantonio       #+#    #+#             */
-/*   Updated: 2024/01/16 23:39:37 by juanantonio      ###   ########.fr       */
+/*   Updated: 2024/01/17 16:57:22 by juan-anm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: juanantonio <juanantonio@student.42.fr>    +#+  +:+       +#+         #
+#    By: juan-anm <juan-anm@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/09 11:46:49 by juanantonio       #+#    #+#              #
-#    Updated: 2024/01/16 18:51:14 by juanantonio      ###   ########.fr        #
+#    Updated: 2024/01/17 17:00:32 by juan-anm         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 

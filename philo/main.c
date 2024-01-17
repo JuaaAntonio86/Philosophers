@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: juanantoniomartinezmorales <juanantonio    +#+  +:+       +#+        */
+/*   By: juan-anm <juan-anm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 18:43:29 by juanantonio       #+#    #+#             */
-/*   Updated: 2024/01/16 23:50:49 by juanantonio      ###   ########.fr       */
+/*   Updated: 2024/01/17 17:02:20 by juan-anm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,18 +38,18 @@ int	create_table(t_table *table)
 	int	i;
 
 	i = -1;
-	//table->philos = malloc(sizeof(t_philo) * table->num_phil);
-	//if (!table->philos)
-	//	return (ft_error_msg(3));
 	table->dinner_time = timestamp();
 	if (philo_initializer(table))
 		return (5);
 	waiter_work(table);
 	i = -1;
+	if (table->end_dinner)
+		ft_blockprint(table, "has died", table->end_dinner - 1, 1);
 	while (++i < table->num_phil)
 	{
-		pthread_join((table->philos[i].thread_id), NULL);
+		pthread_mutex_unlock(&(table->forks[i]));
 		pthread_mutex_destroy(&(table->forks[i]));
+		pthread_join((table->philos[i].thread_id), NULL);
 	}
 	pthread_mutex_destroy(&(table->printing));
 	pthread_mutex_destroy(&(table->meal_update));

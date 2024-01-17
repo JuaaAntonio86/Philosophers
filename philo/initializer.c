@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   initializer.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: juanantoniomartinezmorales <juanantonio    +#+  +:+       +#+        */
+/*   By: juan-anm <juan-anm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 17:07:47 by juan-anm          #+#    #+#             */
-/*   Updated: 2024/01/16 23:38:22 by juanantonio      ###   ########.fr       */
+/*   Updated: 2024/01/17 17:02:06 by juan-anm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,10 @@ int	ft_init_table(t_table *table, char **av)
 	table->time_2sleep = ft_atol(av[4]);
 	table->end_dinner = 0;
 	table->all_ate = 0;
-	if (table->num_phil < 1 || table->time_2die < 1 
+	if (table->num_phil < 1 || table->time_2die < 1
 		|| table->time_2eat < 1 || table->time_2sleep < 1)
 		return (1);
-	if (table->num_phil > INT_MAX || table->time_2die > INT_MAX
+	if (table->num_phil > 200 || table->time_2die > INT_MAX
 		|| table->time_2eat > INT_MAX || table->time_2sleep > INT_MAX)
 		return (1);
 	if (av[5])
@@ -46,9 +46,6 @@ int	mutex_initializer(t_table *table)
 		return (ft_error_msg(4));
 	if (pthread_mutex_init(&(table->meal_update), NULL))
 		return (ft_error_msg(4));
-	//table->forks = malloc(sizeof(pthread_mutex_t) * table->num_phil);
-	//if (!table->forks)
-	//	return (ft_error_msg(3));
 	while (++i < table->num_phil)
 	{
 		if (pthread_mutex_init(&(table->forks[i]), NULL))

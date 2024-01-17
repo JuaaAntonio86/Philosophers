@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philive.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: juanantoniomartinezmorales <juanantonio    +#+  +:+       +#+        */
+/*   By: juan-anm <juan-anm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/09 11:59:37 by juan-anm          #+#    #+#             */
-/*   Updated: 2024/01/17 00:03:40 by juanantonio      ###   ########.fr       */
+/*   Updated: 2024/01/17 17:12:43 by juan-anm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,9 +42,9 @@ inline int	ft_check_all_live(t_table *table)
 	i = 0;
 	while (!table->all_ate && !table->end_dinner && i < table->num_phil)
 	{
-		//pthread_mutex_lock(&(table->meal_update));
+		pthread_mutex_lock(&(table->meal_update));
 		time = timestamp() - table->philos[i].last_meal;
-		//pthread_mutex_unlock(&(table->meal_update));
+		pthread_mutex_unlock(&(table->meal_update));
 		if (time > table->time_2die)
 		{
 			table->end_dinner = table->philos[i].id + 1;
@@ -82,23 +82,19 @@ inline void	philo_eat(t_table *table, t_philo *philo)
 {
 	pthread_mutex_lock(&(table->forks[philo->r_fork]));
 	ft_blockprint(table, "has taken a fork", philo->id, 0);
-	if (table->num_phil < 2)
-		return ;
 	pthread_mutex_lock(&(table->forks[philo->l_fork]));
 	ft_blockprint(table, "has taken a fork", philo->id, 0);
 	ft_blockprint(table, "is eating", philo->id, 0);
-	//pthread_mutex_lock(&(table->meal_update));
+	pthread_mutex_lock(&(table->meal_update));
 	philo->last_meal = timestamp();
-	//pthread_mutex_unlock(&(table->meal_update));
+	pthread_mutex_unlock(&(table->meal_update));
 	ft_usleep(table->time_2eat);
 	philo->num_meals++;
 	pthread_mutex_unlock(&(table->forks[philo->l_fork]));
 	pthread_mutex_unlock(&(table->forks[philo->r_fork]));
-	usleep(500);
 	if (table->end_dinner || table->all_ate)
 		return ;
 	ft_blockprint(table, "is sleeping", philo->id, 0);
 	ft_usleep(table->time_2sleep);
 	ft_blockprint(table, "is thinking", philo->id, 0);
-	ft_usleep(10);
 }
